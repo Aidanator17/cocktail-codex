@@ -3,12 +3,13 @@ const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const pantry_prisma_functions = require("./controllers/prismaController")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // EJS setup
-app.use(expressLayouts);
+// app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Express session middleware
@@ -45,7 +46,7 @@ passport.deserializeUser((id, done) => {
 });
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.render('index', { user: req.user });
 });
 

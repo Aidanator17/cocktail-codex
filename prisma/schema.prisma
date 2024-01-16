@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model pantry_item {
+  pantry_item_id Int          @id @default(autoincrement())
+  name           String?      @db.VarChar(45)
+  img_url        String?      @db.VarChar(45)
+  recipeitem     recipeitem[]
+  userpantry     userpantry[]
+}
+
+model recipe {
+  recipe_id  Int          @id @default(autoincrement())
+  name       String       @unique(map: "name_UNIQUE") @db.VarChar(45)
+  directions String       @db.VarChar(500)
+  img_url    String?      @db.VarChar(45)
+  recipeitem recipeitem[]
+}
+
+model recipeitem {
+  recipeitem_id  Int         @id @default(autoincrement())
+  recipe_id      Int
+  pantry_item_id Int
+  quantity       Decimal     @db.Decimal(10, 2)
+  unit           String      @db.VarChar(45)
+  isgarnish      Int         @db.TinyInt
+  pantry_item    pantry_item @relation(fields: [pantry_item_id], references: [pantry_item_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_ri_pantry_item_id")
+  recipe         recipe      @relation(fields: [recipe_id], references: [recipe_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_ri_recipe_id")
+
+  @@index([pantry_item_id], map: "frn_pantry_item_id_idx")
+  @@index([recipe_id], map: "frn_recipe_id_idx")
+}
+
+model user {
+  user_id       Int          @id @default(autoincrement())
+  email         String       @unique(map: "email_UNIQUE") @db.VarChar(45)
+  username      String       @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password_hash String       @unique(map: "password_UNIQUE") @db.VarChar(45)
+  first_name    String?      @db.VarChar(45)
+  last_name     String?      @db.VarChar(45)
+  userpantry    userpantry[]
+}
+
+model userpantry {
+  userpantry_id  Int         @id @default(autoincrement())
+  user_id        Int
+  pantry_item_id Int
+  pantry_item    pantry_item @relation(fields: [pantry_item_id], references: [pantry_item_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_pantry_item_id")
+  user           user        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_user_id")
+
+  @@index([pantry_item_id], map: "frn_pantry_item_id_idx")
+  @@index([user_id], map: "frn_user_id_idx")
+}
