@@ -3,7 +3,10 @@ const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const pantry_prisma_functions = require("./controllers/prismaController")
+const prisma_functions = require("./controllers/prismaController")
+const pantry_prisma_functions = prisma_functions.pantry
+const recipe_prisma_functions = prisma_functions.recipe
+const user_prisma_functions = prisma_functions.user
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,7 +50,8 @@ passport.deserializeUser((id, done) => {
 
 // Routes
 app.get('/', async (req, res) => {
-    res.render('index', { user: req.user });
+    let recipes = await recipe_prisma_functions.get_recipes()
+    res.render('index', { user: req.user, recipes });
 });
 
 app.get('/login', (req, res) => {

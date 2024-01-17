@@ -48,4 +48,8 @@ const recipe_prisma_functions = {
     }
 }
 
-module.exports = pantry_prisma_functions
+module.exports = {
+    pantry:pantry_prisma_functions,
+    recipe:recipe_prisma_functions,
+    user:user_prisma_functions
+}
