@@ -58,8 +58,9 @@ passport.deserializeUser((id, done) => {
 
 
 app.get('/', async (req, res) => {
+    console.log(await recipe_prisma_functions.get_recipe_by_id(4))
+    
     let recipes = await recipe_prisma_functions.get_recipes()
-
     res.render('index', { user: req.user, recipes });
 });
 

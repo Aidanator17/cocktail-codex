@@ -1,16 +1,16 @@
 const PrismaClient = require('@prisma/client').PrismaClient
 const prisma = new PrismaClient()
-var nl2br  = require('nl2br')
+var nl2br = require('nl2br')
 
 const user_prisma_functions = {
 
 }
 const pantry_prisma_functions = {
-    get_pantry: async function(){
+    get_pantry: async function () {
         const data = await prisma.pantry_item.findMany()
         return data
     },
-    add_userpantry: async function(pid,uid){
+    add_userpantry: async function (pid, uid) {
         const data = await prisma.userpantry.create({
             data: {
                 user_id: uid,
@@ -18,7 +18,7 @@ const pantry_prisma_functions = {
             }
         })
     },
-    remove_userpantry: async function(pid,uid){
+    remove_userpantry: async function (pid, uid) {
         const data = await prisma.userpantry.delete({
             data: {
                 user_id: uid,
@@ -26,50 +26,71 @@ const pantry_prisma_functions = {
             }
         })
     },
-    add_pantry_item: async function(n){
+    add_pantry_item: async function (n) {
         const data = await prisma.pantry_item.create({
             data: {
-                name:n
+                name: n
             }
         })
     },
 }
 const recipe_prisma_functions = {
-    get_recipes: async function(){
+    get_recipes: async function () {
         const recipes = await prisma.recipe.findMany()
         let recipeitems = await recipe_prisma_functions.get_recipe_items()
-        for (r in recipes){
+        for (r in recipes) {
             recipes[r].ingredients = []
             recipes[r].directions = nl2br(recipes[r].directions)
-            for (ri in recipeitems){
-                if (recipes[r].recipe_id == recipeitems[ri].recipe_id){
-                    if (recipeitems[ri].isgarnish){
-                        recipes[r].ingredients.push(recipeitems[ri].item_name+" for garnish")
+            for (ri in recipeitems) {
+                if (recipes[r].recipe_id == recipeitems[ri].recipe_id) {
+                    if (recipeitems[ri].isgarnish) {
+                        recipes[r].ingredients.push(recipeitems[ri].item_name + " for garnish")
                     }
                     else {
-                        recipes[r].ingredients.push(String(recipeitems[ri].quantity)+" "+recipeitems[ri].unit+" "+recipeitems[ri].item_name)
+                        recipes[r].ingredients.push(String(recipeitems[ri].quantity) + " " + recipeitems[ri].unit + " " + recipeitems[ri].item_name)
                     }
                 }
             }
         }
         return recipes
     },
-    get_recipe_items: async function(){
+    get_recipe_by_id: async function (id) {
+        const recipe = await prisma.recipe.findUnique({
+            where: {
+                recipe_id: id
+            }
+        })
+        let recipeitems = await recipe_prisma_functions.get_recipe_items()
+        recipe.ingredients = []
+        recipe.directions = nl2br(recipe.directions)
+        for (ri in recipeitems) {
+            if (recipe.recipe_id == recipeitems[ri].recipe_id) {
+                if (recipeitems[ri].isgarnish) {
+                    recipe.ingredients.push(recipeitems[ri].item_name + " for garnish")
+                }
+                else {
+                    recipe.ingredients.push(String(recipeitems[ri].quantity) + " " + recipeitems[ri].unit + " " + recipeitems[ri].item_name)
+                }
+            }
+        }
+        return recipe
+    },
+    get_recipe_items: async function () {
         const data = await prisma.node_recipeitem.findMany()
         return data
     },
-    add_recipe: async function(n,dir){
+    add_recipe: async function (n, dir) {
         const data = await prisma.recipe.create({
-            data:{
-                name:n,
-                directions:dir
+            data: {
+                name: n,
+                directions: dir
             }
         })
     }
 }
 
 module.exports = {
-    pantry:pantry_prisma_functions,
-    recipe:recipe_prisma_functions,
-    user:user_prisma_functions
+    pantry: pantry_prisma_functions,
+    recipe: recipe_prisma_functions,
+    user: user_prisma_functions
 }
