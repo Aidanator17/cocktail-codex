@@ -1,5 +1,6 @@
 const PrismaClient = require('@prisma/client').PrismaClient
 const prisma = new PrismaClient()
+var nl2br  = require('nl2br')
 
 const user_prisma_functions = {
 
@@ -35,7 +36,26 @@ const pantry_prisma_functions = {
 }
 const recipe_prisma_functions = {
     get_recipes: async function(){
-        const data = await prisma.recipe.findMany()
+        const recipes = await prisma.recipe.findMany()
+        let recipeitems = await recipe_prisma_functions.get_recipe_items()
+        for (r in recipes){
+            recipes[r].ingredients = []
+            recipes[r].directions = nl2br(recipes[r].directions)
+            for (ri in recipeitems){
+                if (recipes[r].recipe_id == recipeitems[ri].recipe_id){
+                    if (recipeitems[ri].isgarnish){
+                        recipes[r].ingredients.push(recipeitems[ri].item_name+" for garnish")
+                    }
+                    else {
+                        recipes[r].ingredients.push(String(recipeitems[ri].quantity)+" "+recipeitems[ri].unit+" "+recipeitems[ri].item_name)
+                    }
+                }
+            }
+        }
+        return recipes
+    },
+    get_recipe_items: async function(){
+        const data = await prisma.node_recipeitem.findMany()
         return data
     },
     add_recipe: async function(n,dir){

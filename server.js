@@ -48,28 +48,26 @@ passport.deserializeUser((id, done) => {
     done(null, { id: 1, username: 'user' });
 });
 
-// Routes
+
+
+
+
+
+
+
+
+
 app.get('/', async (req, res) => {
     let recipes = await recipe_prisma_functions.get_recipes()
+
     res.render('index', { user: req.user, recipes });
 });
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
-app.post('/login',
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    })
-);
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-});
+
+
+
 
 // Start server
 app.listen(PORT, () => {

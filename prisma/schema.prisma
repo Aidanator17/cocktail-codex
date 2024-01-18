@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -29,7 +30,7 @@ model recipeitem {
   pantry_item_id Int
   quantity       Decimal     @db.Decimal(10, 2)
   unit           String      @db.VarChar(45)
-  isgarnish      Int         @db.TinyInt
+  isgarnish      Int         @default(0) @db.TinyInt
   pantry_item    pantry_item @relation(fields: [pantry_item_id], references: [pantry_item_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_ri_pantry_item_id")
   recipe         recipe      @relation(fields: [recipe_id], references: [recipe_id], onDelete: NoAction, onUpdate: NoAction, map: "frn_ri_recipe_id")
 
@@ -56,4 +57,15 @@ model userpantry {
 
   @@index([pantry_item_id], map: "frn_pantry_item_id_idx")
   @@index([user_id], map: "frn_user_id_idx")
+}
+
+view node_recipeitem {
+  recipeitem_id  Int     @default(0) @unique
+  recipe_id      Int
+  pantry_item_id Int
+  quantity       Decimal @db.Decimal(10, 2)
+  unit           String  @db.VarChar(45)
+  isgarnish      Int     @default(0) @db.TinyInt
+  item_name      String? @db.VarChar(45)
+
 }
