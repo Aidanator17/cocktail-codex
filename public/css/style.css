@@ -1,3 +1,17 @@
 .of {
     display: inline;
 }
+#recipe-create-grid {
+    display: grid;
+    grid-template-columns: 500px auto;
+}
+/* #recipe-name{
+} */
+#recipe-directions {
+    display: block;
+    width: 400px;
+    height: 300px;
+}
+#name-area {
+    justify-content: end;
+}

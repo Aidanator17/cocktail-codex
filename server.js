@@ -81,11 +81,13 @@ async function get_ingr(reqbody){
         loopcount++
         length++
     }
+    length = length-2
     // console.log(req.body)
     while (ingr_num <= length / 4) {
         let ingr_id
         loopcount++
         for (item in all_ing){
+            loopcount++
             if (reqbody["item_name_" + ingr_num] == all_ing[item].name){
                 ingr_id = all_ing[item].pantry_item_id
                 break
@@ -111,14 +113,13 @@ async function get_ingr(reqbody){
         }
         ingr_num++
     }
-    // console.log(loopcount)
+    console.log(loopcount)
     return ingr_list
 }
 
 
 
 app.get('/', async (req, res) => {
-    console.log(await recipe_prisma_functions.get_recipe_by_id(4))
 
     let recipes = await recipe_prisma_functions.get_recipes()
     res.render('index', { user: req.user, recipes });
@@ -130,7 +131,14 @@ app.get('/add', async (req, res) => {
 });
 app.post('/add', async (req, res) => {
     let ingredients = await get_ingr(req.body)
-    console.log(ingredients)
+    await recipe_prisma_functions.add_recipe(req.body.recipe_name,req.body.directions)
+    console.log("CREATED RECIPE: "+req.body.recipe_name)
+    const new_recipe = await recipe_prisma_functions.get_recipe_by_name(req.body.recipe_name)
+    console.log("RETREIVED RECIPE: "+new_recipe.name+" (ID: "+new_recipe.recipe_id+")")
+    for (ing in ingredients){
+        await recipe_prisma_functions.add_recipe_items(new_recipe.recipe_id,ingredients[ing].id,parseFloat(ingredients[ing].quan),ingredients[ing].unit,ingredients[ing].garnish ? 1 : 0)
+        console.log("SUBMITTED RECIPE ITEM: "+ingredients[ing].name+" ("+ingredients[ing].quan+ingredients[ing].unit+")")
+    }
 
     res.redirect('/add');
 })

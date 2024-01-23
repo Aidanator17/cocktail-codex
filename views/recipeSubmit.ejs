@@ -2,27 +2,36 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
 <form action="/add" method="post">
-    <div id="ingr-loop-container">
-        <div id="ingr-loop">
-            <div id="1">
-                <input id="quan_num_1" name="quan_num_1" placeholder="QUANTITY" required>
-                <select id="unit_name_1" name="unit_name_1">
-                    <option value="oz">oz</option>
-                    <option value="ml">ml</option>
-                    <option value="Cup">Cup</option>
-                    <option value="tsp">tsp</option>
-                    <option value="tbsp">tbsp</option>
-                </select><p class="of">of</p>
-                <select id="item_name_1" name="item_name_1">
-                    <% for (item in pantry){ %>
-                        <option value="<%= pantry[item] %>"><%= pantry[item] %></option>
-                        <% } %>
-                </select>
-                <label for="garnish_1">Garnish?</label>
-                <input type="checkbox" id="garnish_1" name="garnish_1" value="yes">
-            </div>
+    <div id="recipe-create-grid">
+        <div id="name-area">
+            <input id="recipe_name" name="recipe_name" placeholder="RECIPE NAME">
+            <textarea id="recipe-directions" name="directions" placeholder="DIRECTIONS"></textarea>
         </div>
-        <button type="button" onclick="ingr_add()">Add another!</button>
+        <div id="ingr-loop-container">
+            <div id="ingr-loop">
+                <div id="1">
+                    <input id="quan_num_1" name="quan_num_1" placeholder="QUANTITY" required>
+                    <select id="unit_name_1" name="unit_name_1">
+                        <option value="oz">oz</option>
+                        <option value="ml">ml</option>
+                        <option value="Cup">Cup</option>
+                        <option value="tsp">tsp</option>
+                        <option value="tbsp">tbsp</option>
+                    </select>
+                    <p class="of">of</p>
+                    <select id="item_name_1" name="item_name_1">
+                        <% for (item in pantry){ %>
+                            <option value="<%= pantry[item] %>">
+                                <%= pantry[item] %>
+                            </option>
+                            <% } %>
+                    </select>
+                    <label for="garnish_1">Garnish?</label>
+                    <input type="checkbox" id="garnish_1" name="garnish_1" value="yes">
+                </div>
+            </div>
+            <button type="button" onclick="ingr_add()">Add another!</button>
+        </div>
     </div>
     <button type="submit">Submit</button>
 </form>
@@ -79,13 +88,13 @@
         }
 
         new_label = document.createElement("label")
-        new_label.for = "garnish_"+ingr_num
+        new_label.for = "garnish_" + ingr_num
         new_label.innerHTML = "Garnish?"
 
         new_checkbox = document.createElement("input")
         new_checkbox.type = "checkbox"
-        new_checkbox.id = "garnish_"+ingr_num
-        new_checkbox.name = "garnish_"+ingr_num
+        new_checkbox.id = "garnish_" + ingr_num
+        new_checkbox.name = "garnish_" + ingr_num
         new_checkbox.value = "yes"
 
         new_unit_select.appendChild(new_unit_option_oz)

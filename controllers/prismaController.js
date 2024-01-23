@@ -10,10 +10,10 @@ const pantry_prisma_functions = {
         const data = await prisma.pantry_item.findMany()
         return data
     },
-    get_pantry_names: async function (){
+    get_pantry_names: async function () {
         const data = await prisma.pantry_item.findMany()
         names = []
-        for (item in data){
+        for (item in data) {
             names.push(data[item].name)
         }
         return names
@@ -83,6 +83,15 @@ const recipe_prisma_functions = {
         }
         return recipe
     },
+    get_recipe_by_name: async function (n) {
+        const recipe = await prisma.recipe.findUnique({
+            where: {
+                name: n
+            }
+        })
+
+        return recipe
+    },
     get_recipe_items: async function () {
         const data = await prisma.node_recipeitem.findMany()
         return data
@@ -92,6 +101,17 @@ const recipe_prisma_functions = {
             data: {
                 name: n,
                 directions: dir
+            }
+        })
+    },
+    add_recipe_items: async function (rid,piid,q,u,ig){
+        const data = await prisma.recipeitem.create({
+            data:{
+                recipe_id:rid,
+                pantry_item_id:piid,
+                quantity:q,
+                unit:u,
+                isgarnish:ig
             }
         })
     }
