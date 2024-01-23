@@ -10,6 +10,14 @@ const pantry_prisma_functions = {
         const data = await prisma.pantry_item.findMany()
         return data
     },
+    get_pantry_names: async function (){
+        const data = await prisma.pantry_item.findMany()
+        names = []
+        for (item in data){
+            names.push(data[item].name)
+        }
+        return names
+    },
     add_userpantry: async function (pid, uid) {
         const data = await prisma.userpantry.create({
             data: {

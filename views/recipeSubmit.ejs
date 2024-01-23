@@ -1,0 +1,106 @@
+<head>
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<form action="/add" method="post">
+    <div id="ingr-loop-container">
+        <div id="ingr-loop">
+            <div id="1">
+                <input id="quan_num_1" name="quan_num_1" placeholder="QUANTITY" required>
+                <select id="unit_name_1" name="unit_name_1">
+                    <option value="oz">oz</option>
+                    <option value="ml">ml</option>
+                    <option value="Cup">Cup</option>
+                    <option value="tsp">tsp</option>
+                    <option value="tbsp">tbsp</option>
+                </select><p class="of">of</p>
+                <select id="item_name_1" name="item_name_1">
+                    <% for (item in pantry){ %>
+                        <option value="<%= pantry[item] %>"><%= pantry[item] %></option>
+                        <% } %>
+                </select>
+                <label for="garnish_1">Garnish?</label>
+                <input type="checkbox" id="garnish_1" name="garnish_1" value="yes">
+            </div>
+        </div>
+        <button type="button" onclick="ingr_add()">Add another!</button>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+<script>
+    let ingr_num = 1
+    function ingr_add() {
+        ingr_num++
+
+        parent_div = document.getElementById("ingr-loop")
+
+        new_group = document.createElement("div")
+        new_group.id = String(ingr_num)
+
+        new_input = document.createElement("input")
+        new_input.id = "quan_num_" + String(ingr_num)
+        new_input.name = "quan_num_" + String(ingr_num)
+        new_input.placeholder = "QUANTITY"
+        new_input.required = true
+
+        new_unit_select = document.createElement("select")
+        new_unit_select.id = "unit_name_" + String(ingr_num)
+        new_unit_select.name = "unit_name_" + String(ingr_num)
+
+        new_unit_option_oz = document.createElement("option")
+        new_unit_option_oz.value = "oz"
+        new_unit_option_oz.innerHTML = "oz"
+        new_unit_option_ml = document.createElement("option")
+        new_unit_option_ml.value = "ml"
+        new_unit_option_ml.innerHTML = "ml"
+        new_unit_option_cup = document.createElement("option")
+        new_unit_option_cup.value = "cup"
+        new_unit_option_cup.innerHTML = "Cup"
+        new_unit_option_tsp = document.createElement("option")
+        new_unit_option_tsp.value = "tsp"
+        new_unit_option_tsp.innerHTML = "tsp"
+        new_unit_option_tbsp = document.createElement("option")
+        new_unit_option_tbsp.value = "tbsp"
+        new_unit_option_tbsp.innerHTML = "tbsp"
+
+        new_p = document.createElement("p")
+        new_p.classList.add("of")
+        new_p.innerHTML = "of"
+
+        new_item_select = document.createElement("select")
+        new_item_select.id = "item_name_" + String(ingr_num)
+        new_item_select.name = "item_name_" + String(ingr_num)
+
+        names = "<%= pantry %>".split(",")
+        for (let i = 0; i < names.length; i++) {
+            new_item_option = document.createElement("option")
+            new_item_option.value = names[i]
+            new_item_option.innerHTML = names[i]
+            new_item_select.appendChild(new_item_option)
+        }
+
+        new_label = document.createElement("label")
+        new_label.for = "garnish_"+ingr_num
+        new_label.innerHTML = "Garnish?"
+
+        new_checkbox = document.createElement("input")
+        new_checkbox.type = "checkbox"
+        new_checkbox.id = "garnish_"+ingr_num
+        new_checkbox.name = "garnish_"+ingr_num
+        new_checkbox.value = "yes"
+
+        new_unit_select.appendChild(new_unit_option_oz)
+        new_unit_select.appendChild(new_unit_option_ml)
+        new_unit_select.appendChild(new_unit_option_cup)
+        new_unit_select.appendChild(new_unit_option_tsp)
+        new_unit_select.appendChild(new_unit_option_tbsp)
+
+        new_group.appendChild(new_input)
+        new_group.appendChild(new_unit_select)
+        new_group.appendChild(new_p)
+        new_group.appendChild(new_item_select)
+        new_group.appendChild(new_label)
+        new_group.appendChild(new_checkbox)
+
+        parent_div.appendChild(new_group)
+    }
+</script>
