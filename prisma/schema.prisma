@@ -45,6 +45,7 @@ model user {
   password_hash String       @unique(map: "password_UNIQUE") @db.VarChar(45)
   first_name    String?      @db.VarChar(45)
   last_name     String?      @db.VarChar(45)
+  role          String       @default("user") @db.VarChar(45)
   userpantry    userpantry[]
 }
 
@@ -60,12 +61,11 @@ model userpantry {
 }
 
 view node_recipeitem {
-  recipeitem_id  Int     @default(0) @unique
+  recipeitem_id  Int     @unique @default(0)
   recipe_id      Int
   pantry_item_id Int
   quantity       Decimal @db.Decimal(10, 2)
   unit           String  @db.VarChar(45)
   isgarnish      Int     @default(0) @db.TinyInt
   item_name      String? @db.VarChar(45)
-
 }
