@@ -11,7 +11,11 @@
 <body>
     <header class="header">
         <h1>Welcome to Cocktail Codex</h1>
-        <p>New here? <a href="signup.html">Sign up!</a></p>
+        <% if (user){ %>
+            <p>Welcome back <%= user.first_name %>!</p>
+            <% } else{ %>
+                <p>Returning user? <a href="/auth/login">Login!</a> New here? <a href="/auth/signup">Sign up!</a></p>
+            <% } %>
     </header>
 
     <section class="featured-recipes">

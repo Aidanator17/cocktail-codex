@@ -1,9 +1,35 @@
 const PrismaClient = require('@prisma/client').PrismaClient
 const prisma = new PrismaClient()
 var nl2br = require('nl2br')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const user_prisma_functions = {
-
+    get_user_by_id: async function (id) {
+        const user = await prisma.user.findUnique({
+            where: {
+                user_id: id
+            }
+        })
+        return user
+    },
+    get_user_by_email: async function (e) {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: e
+            }
+        })
+        return user
+    },
+    validPassword: async function (u,pw){
+        bcrypt.compare(pw, u.password_hash, function(err, result) {
+            if (err){
+                console.log(err)
+            }
+            console.log(result)
+            return result
+        });
+    }
 }
 const pantry_prisma_functions = {
     get_pantry: async function () {
@@ -104,14 +130,14 @@ const recipe_prisma_functions = {
             }
         })
     },
-    add_recipe_items: async function (rid,piid,q,u,ig){
+    add_recipe_items: async function (rid, piid, q, u, ig) {
         const data = await prisma.recipeitem.create({
-            data:{
-                recipe_id:rid,
-                pantry_item_id:piid,
-                quantity:q,
-                unit:u,
-                isgarnish:ig
+            data: {
+                recipe_id: rid,
+                pantry_item_id: piid,
+                quantity: q,
+                unit: u,
+                isgarnish: ig
             }
         })
     }

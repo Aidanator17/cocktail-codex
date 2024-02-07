@@ -1,4 +1,5 @@
 const express = require('express');
+const flash = require('express-flash')
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser')
 const session = require('express-session');
@@ -8,6 +9,10 @@ const prisma_functions = require("./controllers/prismaController")
 const pantry_prisma_functions = prisma_functions.pantry
 const recipe_prisma_functions = prisma_functions.recipe
 const user_prisma_functions = prisma_functions.user
+
+const authRoutes = require('./routes/authRoute');
+const indexRoutes = require('./routes/indexRoute');
+const addRoutes = require('./routes/addRoute');
 
 const app = express();
 app.use(bodyParser.json())
@@ -24,32 +29,36 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(flash());
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname + '/public'))
 
-// Passport local strategy
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        // Replace this with your authentication logic
-        if (username === 'user' && password === 'password') {
-            return done(null, { id: 1, username: 'user' });
-        } else {
-            return done(null, false, { message: 'Invalid credentials' });
-        }
-    }
-));
 
-// Passport serialize and deserialize user
+passport.use('local', new LocalStrategy({
+    usernameField: 'email', // assuming email is used for login
+    passwordField: 'password' // assuming password is used for login
+},
+    async (email, password, done) => {
+        const user = await user_prisma_functions.get_user_by_email(email)
+        if (!user) {
+            return done(null, false, { message: 'Incorrect email.' });
+        }
+        if (!user_prisma_functions.validPassword(user, password)) { // Assuming you have a method in your User model to check passwords
+            return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+    }));
+
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.user_id);
 });
 
-passport.deserializeUser((id, done) => {
-    // Replace this with your logic to fetch user from database
-    done(null, { id: 1, username: 'user' });
+passport.deserializeUser(async(id, done) => {
+    const user = await user_prisma_functions.get_user_by_id(id)
+    done(null, user);
 });
 
 async function get_ingr(reqbody) {
@@ -117,6 +126,7 @@ async function get_ingr(reqbody) {
     return ingr_list
 }
 
+app.use('/auth', authRoutes);
 
 
 app.get('/', async (req, res) => {
