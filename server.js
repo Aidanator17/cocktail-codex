@@ -52,7 +52,7 @@ passport.deserializeUser((id, done) => {
     done(null, { id: 1, username: 'user' });
 });
 
-async function get_ingr(reqbody){
+async function get_ingr(reqbody) {
     let all_ing = await pantry_prisma_functions.get_pantry()
     let loopcount = 0
     ingr_list = []
@@ -81,21 +81,21 @@ async function get_ingr(reqbody){
         loopcount++
         length++
     }
-    length = length-2
+    length = length - 2
     // console.log(req.body)
     while (ingr_num <= length / 4) {
         let ingr_id
         loopcount++
-        for (item in all_ing){
+        for (item in all_ing) {
             loopcount++
-            if (reqbody["item_name_" + ingr_num] == all_ing[item].name){
+            if (reqbody["item_name_" + ingr_num] == all_ing[item].name) {
                 ingr_id = all_ing[item].pantry_item_id
                 break
             }
         }
         if (reqbody["garnish_" + ingr_num] == "yes") {
             ingr_list.push({
-                id:ingr_id,
+                id: ingr_id,
                 name: reqbody["item_name_" + ingr_num],
                 quan: reqbody["quan_num_" + ingr_num],
                 unit: reqbody["unit_name_" + ingr_num],
@@ -104,7 +104,7 @@ async function get_ingr(reqbody){
         }
         else {
             ingr_list.push({
-                id:ingr_id,
+                id: ingr_id,
                 name: reqbody["item_name_" + ingr_num],
                 quan: reqbody["quan_num_" + ingr_num],
                 unit: reqbody["unit_name_" + ingr_num],
@@ -120,9 +120,28 @@ async function get_ingr(reqbody){
 
 
 app.get('/', async (req, res) => {
-
     let recipes = await recipe_prisma_functions.get_recipes()
-    res.render('index', { user: req.user, recipes });
+    let featured_ids = []
+    let avail_ids = []
+    let featured = []
+    let i = 0
+    for (r in recipes) {
+        avail_ids.push(recipes[r].recipe_id)
+    }
+    while (i < 4) {
+        let new_id = Math.floor(Math.random() * (recipes.length + 1))
+        if (avail_ids.includes(new_id)) {
+            if (!featured_ids.includes(new_id)) {
+                featured_ids.push(new_id)
+                i++
+            }
+        }
+    }
+    featured_ids = [3, 11, 13, 22]
+    for (id in featured_ids) {
+        featured.push(await recipe_prisma_functions.get_recipe_by_id(featured_ids[id]))
+    }
+    res.render('index', { user: req.user, featured });
 });
 app.get('/add', async (req, res) => {
     pantry = await pantry_prisma_functions.get_pantry_names()
@@ -131,13 +150,13 @@ app.get('/add', async (req, res) => {
 });
 app.post('/add', async (req, res) => {
     let ingredients = await get_ingr(req.body)
-    await recipe_prisma_functions.add_recipe(req.body.recipe_name,req.body.directions)
-    console.log("CREATED RECIPE: "+req.body.recipe_name)
+    await recipe_prisma_functions.add_recipe(req.body.recipe_name, req.body.directions)
+    console.log("CREATED RECIPE: " + req.body.recipe_name)
     const new_recipe = await recipe_prisma_functions.get_recipe_by_name(req.body.recipe_name)
-    console.log("RETREIVED RECIPE: "+new_recipe.name+" (ID: "+new_recipe.recipe_id+")")
-    for (ing in ingredients){
-        await recipe_prisma_functions.add_recipe_items(new_recipe.recipe_id,ingredients[ing].id,parseFloat(ingredients[ing].quan),ingredients[ing].unit,ingredients[ing].garnish ? 1 : 0)
-        console.log("SUBMITTED RECIPE ITEM: "+ingredients[ing].name+" ("+ingredients[ing].quan+ingredients[ing].unit+")")
+    console.log("RETREIVED RECIPE: " + new_recipe.name + " (ID: " + new_recipe.recipe_id + ")")
+    for (ing in ingredients) {
+        await recipe_prisma_functions.add_recipe_items(new_recipe.recipe_id, ingredients[ing].id, parseFloat(ingredients[ing].quan), ingredients[ing].unit, ingredients[ing].garnish ? 1 : 0)
+        console.log("SUBMITTED RECIPE ITEM: " + ingredients[ing].name + " (" + ingredients[ing].quan + ingredients[ing].unit + ")")
     }
 
     res.redirect('/add');

@@ -1,0 +1,9 @@
+<div>
+    <% for (recipe in recipes){ %>
+        <h3><%= recipes[recipe].name %></h3>
+        <p><% for (item in recipes[recipe].ingredients){ %>
+            <%= recipes[recipe].ingredients[item] %><br>
+            <% } %></p>
+        <p><%- recipes[recipe].directions %></p>
+        <% } %>
+</div>

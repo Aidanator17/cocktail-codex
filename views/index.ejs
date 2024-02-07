@@ -1,9 +1,48 @@
-<div>
-    <% for (recipe in recipes){ %>
-        <h3><%= recipes[recipe].name %></h3>
-        <p><% for (item in recipes[recipe].ingredients){ %>
-            <%= recipes[recipe].ingredients[item] %><br>
-            <% } %></p>
-        <p><%- recipes[recipe].directions %></p>
-        <% } %>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <title>Cocktail Codex</title>
+</head>
+
+<body>
+    <header class="header">
+        <h1>Welcome to Cocktail Codex</h1>
+        <p>New here? <a href="signup.html">Sign up!</a></p>
+    </header>
+
+    <section class="featured-recipes">
+        <!-- Replace the placeholders with actual recipe content -->
+        <% for (recipe in featured){ %>
+            <div class="recipe">
+                <img src="<%= featured[recipe].img_url %>" alt="Cocktail 1">
+                <div class="recipe-name">
+                    <%= featured[recipe].name %>
+                </div>
+                <div class="ingredients-list">
+                    <% for (item in featured[recipe].ingredients){ %>
+                        <div class="ingredient">
+                            <%= featured[recipe].ingredients[item] %>
+                        </div>
+                        <% } %>
+                </div>
+                <div class="directions"><%- featured[recipe].directions %></div>
+            </div>
+            <% } %>
+                <!-- Repeat the above structure for each featured recipe -->
+    </section>
+
+    <section class="info">
+        <p>This website helps you discover cocktail recipes based on the ingredients you have at home.</p>
+    </section>
+
+    <footer class="footer">
+        <!-- Add footer content here -->
+        <p>Footer content goes here.</p>
+    </footer>
+</body>
+
+</html>

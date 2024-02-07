@@ -15,3 +15,62 @@
 #name-area {
     justify-content: end;
 }
+
+        /* You can add your CSS styles here */
+        /* For demonstration purposes, I'm adding some basic styling */
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        .featured-recipes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Adjusted the number of columns */
+            gap: 20px;
+            padding: 20px;
+            /* justify-items: center; */
+        }
+        .recipe:nth-child(odd) {
+            justify-self: end; /* Push content to the right in the left column */
+        }
+        
+        /* Adjust the alignment of grid items in the second column */
+        .recipe:nth-child(even) {
+            justify-self: start; /* Push content to the left in the right column */
+        }
+        .recipe {
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            width: calc(50% - 20px);
+            height: 400px; /* Set a fixed height for each grid item */
+            overflow: hidden; /* Hide any content that exceeds the height */
+        }
+        .recipe img {
+            width: 100%; /* Ensure the image fills the width of its container */
+            height: 50%; /* Set the height of the image */
+            object-fit: cover; /* Ensure the image covers the entire container */
+            object-position: center; /* Center the image within its container */
+        }
+        .recipe-name {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .ingredients-list {
+            margin-top: 10px;
+        }
+        .directions {
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .info {
+            text-align: center;
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f2f2f2;}
