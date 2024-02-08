@@ -12,6 +12,7 @@ model pantry_item {
   pantry_item_id Int          @id @default(autoincrement())
   name           String?      @db.VarChar(45)
   img_url        String?      @db.VarChar(45)
+  hidden         Int          @default(0) @db.TinyInt
   recipeitem     recipeitem[]
   userpantry     userpantry[]
 }
@@ -20,7 +21,7 @@ model recipe {
   recipe_id  Int          @id @default(autoincrement())
   name       String       @unique(map: "name_UNIQUE") @db.VarChar(45)
   directions String       @db.VarChar(500)
-  img_url    String?      @db.VarChar(45)
+  img_url    String?      @db.VarChar(500)
   recipeitem recipeitem[]
 }
 
@@ -41,8 +42,8 @@ model recipeitem {
 model user {
   user_id       Int          @id @default(autoincrement())
   email         String       @unique(map: "email_UNIQUE") @db.VarChar(45)
-  username      String       @unique(map: "username_UNIQUE") @db.VarChar(45)
-  password_hash String       @unique(map: "password_UNIQUE") @db.VarChar(45)
+  username      String?      @db.VarChar(45)
+  password_hash String       @unique(map: "password_UNIQUE") @db.VarChar(200)
   first_name    String?      @db.VarChar(45)
   last_name     String?      @db.VarChar(45)
   role          String       @default("user") @db.VarChar(45)
@@ -68,4 +69,5 @@ view node_recipeitem {
   unit           String  @db.VarChar(45)
   isgarnish      Int     @default(0) @db.TinyInt
   item_name      String? @db.VarChar(45)
+  hidden         Int?    @default(0) @db.TinyInt
 }

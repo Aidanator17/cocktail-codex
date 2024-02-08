@@ -21,13 +21,25 @@ const user_prisma_functions = {
         })
         return user
     },
-    validPassword: async function (u,pw){
-        bcrypt.compare(pw, u.password_hash, function(err, result) {
-            if (err){
+    validPassword: async function (u, pw) {
+        bcrypt.compare(pw, u.password_hash, function (err, result) {
+            if (err) {
                 console.log(err)
             }
-            console.log(result)
+            // console.log(result)
             return result
+        });
+    },
+    add_user: async function (fn, ln, e, pw) {
+        bcrypt.hash(pw, saltRounds, async function (err, hash) {
+            const user = await prisma.user.create({
+                data: {
+                    email: e,
+                    password_hash: hash,
+                    first_name: fn,
+                    last_name: ln
+                }
+            })
         });
     }
 }
