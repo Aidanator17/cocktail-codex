@@ -64,13 +64,32 @@ const pantry_prisma_functions = {
             }
         })
     },
-    remove_userpantry: async function (pid, uid) {
+    remove_userpantry: async function (upid) {
         const data = await prisma.userpantry.delete({
-            data: {
-                user_id: uid,
-                pantry_item_id: pid
+            where: {
+                userpantry_id: upid
             }
         })
+    },
+    get_userpantry: async function (uid) {
+        const data = await prisma.userpantry.findMany({
+            where: {
+                user_id: uid
+            }
+        })
+        return data
+    },
+    get_userpantry_ids: async function (uid) {
+        const data = await prisma.userpantry.findMany({
+            where: {
+                user_id: uid
+            }
+        })
+        items = []
+        for (item in data) {
+            items.push(data[item].pantry_item_id)
+        }
+        return items
     },
     add_pantry_item: async function (n) {
         const data = await prisma.pantry_item.create({
@@ -86,14 +105,21 @@ const recipe_prisma_functions = {
         let recipeitems = await recipe_prisma_functions.get_recipe_items()
         for (r in recipes) {
             recipes[r].ingredients = []
+            recipes[r].ingredientnames = []
+            recipes[r].ingredientIDs = []
             recipes[r].directions = nl2br(recipes[r].directions)
             for (ri in recipeitems) {
                 if (recipes[r].recipe_id == recipeitems[ri].recipe_id) {
                     if (recipeitems[ri].isgarnish) {
                         recipes[r].ingredients.push(recipeitems[ri].item_name + " for garnish")
+                        recipes[r].ingredientnames.push(recipeitems[ri].item_name)
                     }
                     else {
                         recipes[r].ingredients.push(String(recipeitems[ri].quantity) + " " + recipeitems[ri].unit + " " + recipeitems[ri].item_name)
+                        recipes[r].ingredientnames.push(recipeitems[ri].item_name)
+                        if (recipeitems[ri].hidden == 0) {
+                            recipes[r].ingredientIDs.push(recipeitems[ri].pantry_item_id)
+                        }
                     }
                 }
             }

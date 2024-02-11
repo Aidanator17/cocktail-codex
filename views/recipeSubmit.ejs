@@ -1,7 +1,7 @@
 <head>
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
-<form action="/add" method="post">
+<form action="/add/recipe" method="post">
     <div id="recipe-create-grid">
         <div id="name-area">
             <input id="recipe_name" name="recipe_name" placeholder="RECIPE NAME">
@@ -81,7 +81,7 @@
 
         new_p = document.createElement("p")
         new_p.classList.add("of")
-        new_p.innerHTML = "of"
+        new_p.innerHTML = " of "
 
         new_item_select = document.createElement("select")
         new_item_select.id = "item_name_" + String(ingr_num)

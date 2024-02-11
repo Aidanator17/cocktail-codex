@@ -1,0 +1,38 @@
+/* navbar.css */
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-side,
+.right-side {
+    display: flex;
+}
+
+.left-side ul,
+.right-side ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.left-side ul li,
+.right-side ul li {
+    margin-right: 10px;
+}
+
+.left-side a,
+.right-side a {
+    text-decoration: none;
+    color: white;
+}
+
+.left-side a:hover,
+.right-side a:hover {
+    text-decoration: underline;
+}

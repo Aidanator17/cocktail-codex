@@ -5,7 +5,7 @@ exports.ensureAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login'); // Redirect to login page if not authenticated
+    res.redirect('/auth/login'); // Redirect to login page if not authenticated
 };
 
 // Middleware to check if user is not authenticated (e.g., for login and signup pages)

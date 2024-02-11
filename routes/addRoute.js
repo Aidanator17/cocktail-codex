@@ -1,5 +1,5 @@
 const express = require('express');
-const authRouter = express.Router();
+const addRouter = express.Router();
 const prisma_functions = require("../controllers/prismaController")
 const pantry_prisma_functions = prisma_functions.pantry
 const recipe_prisma_functions = prisma_functions.recipe
@@ -72,12 +72,22 @@ async function get_ingr(reqbody) {
     return ingr_list
 }
 
-authRouter.get('/recipe', ensureAdmin, async (req, res) => {
+async function compare( a, b ) {
+    if ( a.name < b.name ){
+      return -1;
+    }
+    if ( a.name > b.name ){
+      return 1;
+    }
+    return 0;
+  }
+
+addRouter.get('/recipe', ensureAdmin, async (req, res) => {
     pantry = await pantry_prisma_functions.get_pantry_names()
     pantry.sort()
     res.render('recipeSubmit', { user: req.user, pantry });
 });
-authRouter.post('/recipe', async (req, res) => {
+addRouter.post('/recipe', async (req, res) => {
     let ingredients = await get_ingr(req.body)
     await recipe_prisma_functions.add_recipe(req.body.recipe_name, req.body.directions)
     console.log("CREATED RECIPE: " + req.body.recipe_name)
@@ -90,8 +100,30 @@ authRouter.post('/recipe', async (req, res) => {
 
     res.redirect('/add/recipe');
 })
-authRouter.get('/item', ensureAdmin, async (req,res)=>{
+addRouter.get('/item', ensureAdmin, async (req,res)=>{
 
 })
+addRouter.get('/pantry', ensureAuthenticated, async (req,res)=>{
+    let userp = await pantry_prisma_functions.get_userpantry(req.user.user_id)
+    let userp_full = []
+    const pantry = await pantry_prisma_functions.get_pantry()
+    for (item in userp){
+        for (pitem in pantry){
+            if (pantry[pitem].pantry_item_id == userp[item].pantry_item_id){
+                userp_full.push(pantry[pitem])
+                pantry.splice(pitem, 1)
+            }
+            else if (pantry[pitem].hidden == 1) {
+                pantry.splice(pitem, 1)
+            }
+        }
+    }
+    pantry.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    res.render('addPantry', { user: req.user, pantry, user_pantry:userp_full });
+})
+addRouter.post('/pantry', async (req,res)=>{
+    await pantry_prisma_functions.add_userpantry(parseInt(req.body.pantryitem),req.user.user_id)
+    res.redirect("/add/pantry")
+})
 
-module.exports = authRouter;
+module.exports = addRouter;

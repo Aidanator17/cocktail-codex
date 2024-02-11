@@ -1,0 +1,35 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Items to Your Pantry</title>
+    <link rel="stylesheet" href="/css/addPantry.css" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <form action="/add/pantry" method="POST">
+            <h1>Add items to your pantry!</h1>
+            <select name="pantryitem" id="pantry-items">
+                <% for (item in pantry){ %>
+                    <option value="<%= pantry[item].pantry_item_id %>">
+                        <%= pantry[item].name %>
+                    </option>
+                    <% } %>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <div id="user-pantry-grid-container">
+        <h2>Your Pantry:</h2>
+        <div id="user-pantry-grid">
+            <% for (item in user_pantry) { %>
+                <p class="user-pantry-grid-item">
+                    <%= user_pantry[item].name %>
+                </p>
+                <div class="image-container">
+                    <a href="/remove/pantry/<%= user_pantry[item].pantry_item_id %>"><img class="user-pantry-grid-item delete-img" src="/images/delete.png"></a>
+                </div>
+                <% } %>
+        </div>
+    </div>
+</body>

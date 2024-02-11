@@ -1,0 +1,77 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail Recipes</title>
+    <link rel="stylesheet" href="/css/recipe.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Recipes</h1>
+            <button id="toggleButton" name="1" onclick="swaplist()" style="background-color: red;">Toggle all</button>
+        </div>
+        <div id="allrecipes" class="recipe-list" style="display: none;">
+            <% for (recipe in recipes) { %>
+                <div class="recipe-card">
+                    <% if (recipes[recipe].img_url){ %>
+                        <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img src="<%= recipes[recipe].img_url %>" alt="<%= recipes[recipe].name %>"
+                            class="recipe-image"></a>
+                        <% }else{ %>
+                            <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img src="/images/placeholder-image.jpg" alt="<%= recipes[recipe].name %>"
+                                class="recipe-image"></a>
+                            <% } %>
+                                <h2>
+                                    <%= recipes[recipe].name %>
+                                </h2>
+                                <ul class="ingredients">
+                                    <% for (ingredient in recipes[recipe].ingredientnames) { %>
+                                        <li>
+                                            <%= recipes[recipe].ingredientnames[ingredient] %>
+                                        </li>
+                                        <% }; %>
+                                </ul>
+                </div>
+                <% }; %>
+        </div>
+        <div id="userrecipes" class="recipe-list">
+            <% for (recipe in urecipes) { %>
+                <div class="recipe-card">
+                    <% if (urecipes[recipe].img_url){ %>
+                        <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img src="<%= urecipes[recipe].img_url %>" alt="<%= urecipes[recipe].name %>"
+                            class="recipe-image"></a>
+                        <% }else{ %>
+                            <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img src="/images/placeholder-image.jpg" alt="<%= urecipes[recipe].name %>"
+                                class="recipe-image"></a>
+                            <% } %>
+                                <h2>
+                                    <%= urecipes[recipe].name %>
+                                </h2>
+                                <ul class="ingredients">
+                                    <% for (ingredient in urecipes[recipe].ingredientnames) { %>
+                                        <li>
+                                            <%= urecipes[recipe].ingredientnames[ingredient] %>
+                                        </li>
+                                        <% }; %>
+                                </ul>
+                </div>
+                <% }; %>
+        </div>
+    </div>
+    <script>
+        let swaplist = function(){
+            if (document.getElementById("toggleButton").name == "1"){
+                document.getElementById("userrecipes").style = "display: none;"
+                document.getElementById("allrecipes").style = ""
+                document.getElementById("toggleButton").name = "0"
+                document.getElementById("toggleButton").style = "background-color: green;"
+            }
+            else {
+                document.getElementById("userrecipes").style = ""
+                document.getElementById("allrecipes").style = "display: none;"
+                document.getElementById("toggleButton").name = "1"
+                document.getElementById("toggleButton").style = "background-color: red;"
+            }        
+        }
+    </script>
+</body>

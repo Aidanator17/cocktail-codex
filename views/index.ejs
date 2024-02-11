@@ -14,10 +14,10 @@
         <% if (user){ %>
             <p>Welcome back <%= user.first_name %>!</p>
             <% } else{ %>
-                <p>Returning user? <a href="/auth/login">Login!</a> New here? <a href="/auth/signup">Sign up!</a></p>
-            <% } %>
+                <p><a href="/auth/login">Login</a> / <a href="/auth/signup">Sign up</a> to start the journey.</p>
+                <% } %>
     </header>
-
+    <h4 id="featured-recipes-title">Featured Recipes:</h4>
     <section class="featured-recipes">
         <!-- Replace the placeholders with actual recipe content -->
         <% for (recipe in featured){ %>

@@ -1,0 +1,56 @@
+/* recipe.css */
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Changed to display three items per row */
+    gap: 20px;
+}
+
+.recipe-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.recipe-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.ingredients {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ingredients li {
+    margin-bottom: 5px;
+}
+
+#toggleButton {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#toggleButton:hover {
+    background-color: #0056b3;
+}

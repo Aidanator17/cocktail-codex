@@ -1,6 +1,10 @@
 .of {
     display: inline;
 }
+#featured-recipes-title{
+    padding-left: 25%;
+    margin-bottom: 0;
+}
 #recipe-create-grid {
     display: grid;
     grid-template-columns: 500px auto;

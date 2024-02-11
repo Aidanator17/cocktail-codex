@@ -11,10 +11,14 @@ const user_prisma_functions = prisma_functions.user
 const authRoutes = require('./routes/authRoute');
 const indexRoutes = require('./routes/indexRoute');
 const addRoutes = require('./routes/addRoute');
+const recipeRoutes = require('./routes/recipeRoute');
+const removeRoutes = require('./routes/removeRoute');
 
 const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(expressLayouts)
+app.set('layout', './layouts/navbar')
 const PORT = process.env.PORT || 3000;
 
 // EJS setup
@@ -61,8 +65,10 @@ passport.deserializeUser(async(id, done) => {
 
 
 app.use('/', indexRoutes)
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes)
 app.use('/add', addRoutes)
+app.use('/recipe', recipeRoutes)
+app.use('/remove', removeRoutes)
 
 
 app.listen(PORT, () => {
