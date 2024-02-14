@@ -3,14 +3,23 @@
 .navbar {
     background-color: #333;
     color: white;
-    padding: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Align items vertically */
+}
+
+.navbar-logo {
+    width: 70px;
 }
 
 .left-side,
 .right-side {
     display: flex;
+    align-items: center; /* Align items vertically */
 }
 
 .left-side ul,
@@ -19,6 +28,7 @@
     margin: 0;
     padding: 0;
     display: flex;
+    align-items: center; /* Align items vertically */
 }
 
 .left-side ul li,
