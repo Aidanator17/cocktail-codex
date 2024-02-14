@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/navbar.css">
+    <title>Happy Hour Helper</title>
 </head>
 
 <body>
@@ -20,7 +21,13 @@
             <% if (user){ %>
                 <ul>
                     <% if (user.role=="admin" ){ %>
-                        <li><a>ADMIN PLACEHOLDER</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropbtn">Admin</a>
+                            <div class="dropdown-content">
+                                <a href="/add/item">Add Item</a>
+                                <a href="/add/recipe">Add Recipe</a>
+                            </div>
+                        </li>
                         <% } %>
                             <li><a href="/add/pantry">The Pantry</a></li>
                             <li><a href="/recipe/all">Recipes</a></li>

@@ -29,6 +29,8 @@ recipeRouter.get('/all', ensureAuthenticated, async (req,res) => {
         }
     }
 
+    recipes.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    urecipes.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
 
     res.render("recipes", {user:req.user, recipes, urecipes})
 })

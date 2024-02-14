@@ -101,7 +101,20 @@ addRouter.post('/recipe', async (req, res) => {
     res.redirect('/add/recipe');
 })
 addRouter.get('/item', ensureAdmin, async (req,res)=>{
-
+    res.render("pantrySubmit",{user:req.user})
+})
+addRouter.post('/item', async (req,res)=>{
+    await pantry_prisma_functions.add_pantry_item(req.body.name,req.body.img_url)
+    console.log("CREATED ITEM: "+req.body.name)
+    const pantry = await pantry_prisma_functions.get_pantry()
+    let item_confirmation
+    for (item in pantry){
+        if (pantry[item].name == req.body.name){
+            item_confirmation = pantry[item].name 
+        }
+    }
+    console.log("SUCCESSFULLY RECIEVED ITEM",item_confirmation)
+    res.redirect("/add/item")
 })
 addRouter.get('/pantry', ensureAuthenticated, async (req,res)=>{
     let userp = await pantry_prisma_functions.get_userpantry(req.user.user_id)

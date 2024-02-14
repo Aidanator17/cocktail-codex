@@ -91,12 +91,22 @@ const pantry_prisma_functions = {
         }
         return items
     },
-    add_pantry_item: async function (n) {
-        const data = await prisma.pantry_item.create({
-            data: {
-                name: n
-            }
-        })
+    add_pantry_item: async function (n, iurl) {
+        if (iurl) {
+            const data = await prisma.pantry_item.create({
+                data: {
+                    name: n,
+                    img_url:iurl
+                }
+            })
+        }
+        else {
+            const data = await prisma.pantry_item.create({
+                data: {
+                    name: n
+                }
+            })
+        }
     },
 }
 const recipe_prisma_functions = {
