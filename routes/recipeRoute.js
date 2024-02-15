@@ -9,7 +9,7 @@ const { ensureAuthenticated, ensureNotAuthenticated, ensureAdmin } = require('..
 
 recipeRouter.get('/id/:id', ensureAuthenticated, async (req, res) => {
     const recipe = await recipe_prisma_functions.get_recipe_by_id(parseInt(req.params['id']))
-    res.redirect("/")
+    res.render("recipe", {user:req.user, recipe})
 });
 
 recipeRouter.get('/all', ensureAuthenticated, async (req,res) => {
