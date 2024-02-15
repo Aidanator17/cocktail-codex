@@ -132,6 +132,7 @@ addRouter.get('/pantry', ensureAuthenticated, async (req,res)=>{
         }
     }
     pantry.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    userp_full.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
     res.render('addPantry', { user: req.user, pantry, user_pantry:userp_full });
 })
 addRouter.post('/pantry', async (req,res)=>{

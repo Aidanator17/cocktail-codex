@@ -20,14 +20,14 @@
         </form>
     </div>
     <div id="user-pantry-grid-container">
-        <h2>Your Pantry:</h2>
+        <h2>Your Pantry:</h2><a href="/remove/pantry/all">(clear pantry)</a>
         <div id="user-pantry-grid">
             <% for (item in user_pantry) { %>
                 <p class="user-pantry-grid-item">
                     <%= user_pantry[item].name %>
                 </p>
                 <div class="image-container">
-                    <a href="/remove/pantry/<%= user_pantry[item].pantry_item_id %>"><img class="user-pantry-grid-item delete-img" src="/images/delete.png"></a>
+                    <a href="/remove/pantry/id/<%= user_pantry[item].pantry_item_id %>"><img class="user-pantry-grid-item delete-img" src="/images/delete.png"></a>
                 </div>
                 <% } %>
         </div>

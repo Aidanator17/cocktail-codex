@@ -22,7 +22,7 @@
         <!-- Replace the placeholders with actual recipe content -->
         <% for (recipe in featured){ %>
             <div class="recipe">
-                <img src="<%= featured[recipe].img_url %>" alt="Cocktail 1">
+                <a href="/recipe/id/<%= featured[recipe].recipe_id %>"><img src="<%= featured[recipe].img_url %>" alt="Cocktail 1"></a>
                 <div class="recipe-name">
                     <%= featured[recipe].name %>
                 </div>
