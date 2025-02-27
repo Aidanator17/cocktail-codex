@@ -19,6 +19,7 @@
                         <option value="pinch">pinch</option>
                         <option value="tsp">tsp</option>
                         <option value="tbsp">tbsp</option>
+                        <option value="part">part</option>
                     </select>
                     <p class="of">of</p>
                     <select id="item_name_1" name="item_name_1">
@@ -78,6 +79,9 @@
         new_unit_option_tbsp = document.createElement("option")
         new_unit_option_tbsp.value = "tbsp"
         new_unit_option_tbsp.innerHTML = "tbsp"
+        new_unit_option_part = document.createElement("option")
+        new_unit_option_part.value = "part"
+        new_unit_option_part.innerHTML = "part"
 
         new_p = document.createElement("p")
         new_p.classList.add("of")
@@ -112,6 +116,7 @@
         new_unit_select.appendChild(new_unit_option_pinch)
         new_unit_select.appendChild(new_unit_option_tsp)
         new_unit_select.appendChild(new_unit_option_tbsp)
+        new_unit_select.appendChild(new_unit_option_part)
 
         new_group.appendChild(new_input)
         new_group.appendChild(new_unit_select)

@@ -6,10 +6,21 @@
 
 <body>
     <div class="container">
+        
         <% if (recipe.img_url){ %>
-            <img src="<%= recipe.img_url %>" alt="Recipe image" class="recipe-image">
-            <% }else{ %><img src="/images/placeholder-image.jpg" alt="<%= recipe.name %>" class="recipe-image">
-                <% } %>
+            <% if (recipe.img_url.includes("https")){ %>
+                <a href="/recipe/id/<%= recipe.recipe_id %>"><img
+                        src="<%= recipe.img_url %>" alt="<%= recipe.name %>"
+                        class="recipe-image"></a>
+                <% }else {%>
+                    <a href="/recipe/id/<%= recipe.recipe_id %>"><img
+                            src="/images/drinks/<%= recipe.img_url %>.jpg" alt="<%= recipe.name %>"
+                            class="recipe-image"></a>
+                    <%}}else{ %>
+                        <a href="/recipe/id/<%= recipe.recipe_id %>"><img
+                                src="/images/placeholder-image.jpg" alt="<%= recipe.name %>"
+                                class="recipe-image"></a>
+                        <% } %>
                     <h1 class="recipe-name">
                         <%= recipe.name %>
                     </h1>

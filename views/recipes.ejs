@@ -15,22 +15,29 @@
             <% for (recipe in recipes) { %>
                 <div class="recipe-card">
                     <% if (recipes[recipe].img_url){ %>
-                        <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img src="<%= recipes[recipe].img_url %>" alt="<%= recipes[recipe].name %>"
-                            class="recipe-image"></a>
-                        <% }else{ %>
-                            <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img src="/images/placeholder-image.jpg" alt="<%= recipes[recipe].name %>"
-                                class="recipe-image"></a>
-                            <% } %>
-                                <h2>
-                                    <%= recipes[recipe].name %>
-                                </h2>
-                                <ul class="ingredients">
-                                    <% for (ingredient in recipes[recipe].ingredientnames) { %>
-                                        <li>
-                                            <%= recipes[recipe].ingredientnames[ingredient] %>
-                                        </li>
-                                        <% }; %>
-                                </ul>
+                        <% if (recipes[recipe].img_url.includes("https")){ %>
+                            <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img
+                                    src="<%= recipes[recipe].img_url %>" alt="<%= recipes[recipe].name %>"
+                                    class="recipe-image"></a>
+                            <% }else {%>
+                                <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img
+                                        src="/images/drinks/<%= recipes[recipe].img_url %>.jpg" alt="<%= recipes[recipe].name %>"
+                                        class="recipe-image"></a>
+                                <%}}else{ %>
+                                    <a href="/recipe/id/<%= recipes[recipe].recipe_id %>"><img
+                                            src="/images/placeholder-image.jpg" alt="<%= recipes[recipe].name %>"
+                                            class="recipe-image"></a>
+                                    <% } %>
+                                        <h2>
+                                            <%= recipes[recipe].name %>
+                                        </h2>
+                                        <ul class="ingredients">
+                                            <% for (ingredient in recipes[recipe].ingredientnames) { %>
+                                                <li>
+                                                    <%= recipes[recipe].ingredientnames[ingredient] %>
+                                                </li>
+                                                <% }; %>
+                                        </ul>
                 </div>
                 <% }; %>
         </div>
@@ -38,12 +45,19 @@
             <% for (recipe in urecipes) { %>
                 <div class="recipe-card">
                     <% if (urecipes[recipe].img_url){ %>
-                        <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img src="<%= urecipes[recipe].img_url %>" alt="<%= urecipes[recipe].name %>"
-                            class="recipe-image"></a>
-                        <% }else{ %>
-                            <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img src="/images/placeholder-image.jpg" alt="<%= urecipes[recipe].name %>"
-                                class="recipe-image"></a>
-                            <% } %>
+                        <% if (urecipes[recipe].img_url.includes("https")){ %>
+                            <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img
+                                    src="<%= urecipes[recipe].img_url %>" alt="<%= urecipes[recipe].name %>"
+                                    class="recipe-image"></a>
+                            <% }else {%>
+                                <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img
+                                        src="/images/drinks/<%= urecipes[recipe].img_url %>.jpg" alt="<%= urecipes[recipe].name %>"
+                                        class="recipe-image"></a>
+                                <%}}else{ %>
+                                    <a href="/recipe/id/<%= urecipes[recipe].recipe_id %>"><img
+                                            src="/images/placeholder-image.jpg" alt="<%= urecipes[recipe].name %>"
+                                            class="recipe-image"></a>
+                                    <% } %>
                                 <h2>
                                     <%= urecipes[recipe].name %>
                                 </h2>
@@ -59,8 +73,8 @@
         </div>
     </div>
     <script>
-        let swaplist = function(){
-            if (document.getElementById("toggleButton").name == "1"){
+        let swaplist = function () {
+            if (document.getElementById("toggleButton").name == "1") {
                 document.getElementById("userrecipes").style = "display: none;"
                 document.getElementById("allrecipes").style = ""
                 document.getElementById("toggleButton").name = "0"
@@ -71,7 +85,7 @@
                 document.getElementById("allrecipes").style = "display: none;"
                 document.getElementById("toggleButton").name = "1"
                 document.getElementById("toggleButton").style = "background-color: red;"
-            }        
+            }
         }
     </script>
 </body>
